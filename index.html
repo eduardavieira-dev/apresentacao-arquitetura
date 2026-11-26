@@ -36,14 +36,11 @@ html,body{height:100%;background:#d9dde1;overflow:hidden;font-family:var(--sans)
 .slide.dark{background:radial-gradient(130% 150% at 100% 0%,#3b444d 0%,#2a3138 45%,#1c2126 100%)}
 .notes{display:none}
 
-/* faixas verde-limão */
-.slide[data-bar]::after{content:"";position:absolute;background:var(--lime);z-index:3}
-.slide[data-bar="bottom"]::after{left:0;right:0;bottom:0;height:9px}
-.slide[data-bar="bottom-in"]::after{left:76px;right:76px;bottom:0;height:9px}
-.slide[data-bar="top"]::after{left:28%;right:42%;top:0;height:9px}
-.slide[data-bar="top-in"]::after{left:76px;right:76px;top:0;height:9px}
-.slide[data-bar="right"]::after{right:0;top:80px;bottom:80px;width:9px}
-.slide[data-bar="left"]::after{left:0;top:240px;bottom:140px;width:9px}
+/* barra de progresso: sempre embaixo, um segmento por parte da história */
+.prog{position:absolute;left:0;right:0;bottom:0;height:6px;display:flex;gap:3px;z-index:3;pointer-events:none}
+.prog .sg{flex:var(--n) 1 0;background:rgba(20,28,36,.10);overflow:hidden}
+.slide.dark .prog .sg{background:rgba(255,255,255,.13)}
+.prog .sg i{display:block;height:100%;width:var(--w,0);background:var(--lime)}
 
 /* tipografia */
 h1,h2{font-family:var(--fd);font-weight:500;letter-spacing:-.035em;
@@ -89,6 +86,12 @@ em{font-style:normal;font-weight:600;color:var(--acc)}
 
 /* cartões */
 .cols{display:grid;gap:18px}
+/* sumário */
+.agenda .toc{list-style:none;margin-top:34px;max-width:900px;border-top:1px solid var(--line)}
+.agenda .toc li{display:grid;grid-template-columns:44px auto 1fr;align-items:center;gap:0 18px;padding:15px 0;border-bottom:1px solid var(--line)}
+.agenda .toc .n{justify-self:start;font-family:var(--fd);font-size:26px;font-weight:700;line-height:1;letter-spacing:-.02em;color:var(--lime);-webkit-text-stroke:.8px #8ab400}
+.agenda .toc b{font-family:var(--fd);font-size:27px;font-weight:500;letter-spacing:-.02em;color:var(--hi)}
+.agenda .toc .d{font-size:17px;color:var(--muted)}
 .c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}.c5{grid-template-columns:repeat(5,1fr)}
 .col{background:var(--glass);border:1px solid var(--cardb);border-radius:22px;padding:20px 22px 22px}
 .col .num{font-family:var(--fd);font-weight:500;font-size:42px;line-height:1;color:var(--acc);margin-bottom:12px;letter-spacing:-.03em}
@@ -108,6 +111,7 @@ td.k{font-weight:600;color:var(--hi);white-space:nowrap}
 td.g{color:var(--acc)}
 
 /* ícones */
+.ci{width:1.05em;height:1.05em;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;vertical-align:-.17em;margin-right:5px}
 .ico{width:18px;height:18px;stroke:var(--limeD);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .iconrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:30px}
 .iconrow div{display:inline-flex;align-items:center;gap:8px;background:var(--sub);border:1px solid var(--line);border-radius:999px;padding:8px 16px 8px 12px;font-weight:500;font-size:15px;color:var(--hi)}
@@ -121,9 +125,9 @@ td.g{color:var(--acc)}
 .cover .main{padding:0 76px;display:flex;flex-direction:column;justify-content:center}
 .cover .sub{font-family:var(--fd);font-size:32px;line-height:1.2;color:#fff;letter-spacing:-.02em;margin-top:12px;max-width:20ch}
 /* encerramento: limpo, sem lateral nem logo */
-.closing .body{margin:auto 0}
-.closing h1{font-size:160px;line-height:.92;letter-spacing:-.04em}
-.closing .rule{margin:30px 0 22px}
+.closing .body{margin:auto;display:flex;flex-direction:column;align-items:center;text-align:center}
+.closing h1{font-size:160px;line-height:.92;letter-spacing:-.04em;padding:0 .08em .22em}
+.closing .rule{margin:6px 0 22px}
 .closing .sub{font-family:var(--fd);font-size:40px;line-height:1.1;letter-spacing:-.02em;color:var(--soft)}
 .members{list-style:none;display:flex;flex-wrap:wrap;gap:10px}
 .members li{display:flex;align-items:center;gap:9px;background:rgba(20,25,30,.45);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:7px 16px 7px 8px;font-size:14.5px;font-weight:500;color:#fff}
@@ -284,7 +288,8 @@ pre.code span.lit{background:var(--lime);color:#1a1e22;box-shadow:0 0 0 3px var(
 .steps4{display:flex;flex-direction:column;gap:16px}
 .steps4 div{display:grid;grid-template-columns:34px 1fr;align-items:center;gap:14px;font-size:21px;color:var(--hi)}
 .steps4 i{font-style:normal;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:13px;font-weight:700;background:rgba(255,139,116,.16);border:1.5px solid var(--coral);color:var(--coral)}
-.bigt{font-family:var(--fd);font-weight:500;font-size:64px;line-height:1;color:var(--coral);letter-spacing:-.03em}
+.bigt{font-family:var(--fd);font-weight:500;font-size:52px;line-height:1;color:var(--coral);letter-spacing:-.03em}
+.bigt .lead-in{color:var(--hi)}
 
 /* tags nativo / SDUI */
 .tg{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;border-radius:999px;padding:2px 8px;margin-left:4px}
@@ -327,7 +332,7 @@ pre.code span.lit{background:var(--lime);color:#1a1e22;box-shadow:0 0 0 3px var(
 .ms .sn{font-family:var(--mono);font-size:9px;color:#7d848b}
 .ms .q{font-weight:700;font-size:12px;margin:3px 0 7px}
 .ms .vals{display:flex;gap:4px;margin-bottom:8px}
-.ms .vals i{font-style:normal;flex:1;text-align:center;border:1px solid #d6dade;border-radius:6px;padding:3px 0;font-size:9.5px;font-weight:600}
+.ms .vals i{font-style:normal;flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;height:24px;padding:0 2px;white-space:nowrap;border:1px solid #d6dade;border-radius:6px;font-size:9px;font-weight:600;letter-spacing:-.01em}
 .ms .vals i.on{background:#1a1e22;color:var(--lime);border-color:#1a1e22}
 .ms .bt{position:absolute;left:9px;right:9px;bottom:10px;background:#1a1e22;color:var(--lime);border-radius:999px;text-align:center;padding:5px;font-size:10px;font-weight:700}
 .ms .in{border:1px dashed #9aa1a8;border-radius:6px;padding:5px;font-size:9.5px;color:#7d848b}
@@ -498,12 +503,28 @@ th{border-bottom-color:rgba(138,180,0,.55)}
   <aside class="notes">Abertura (Pessoa 1). Apresente o grupo em uma frase e anuncie: "vamos contar uma história de festival e, no caminho, mostrar a arquitetura". O celular à direita é a tela que a Ana vai ver no sábado, já com o aviso de chuva.</aside>
 </section>
 
+<!-- 2 · SUMÁRIO -->
+<section class="slide agenda" data-act="0">
+  <div class="body">
+    <h2 class="r w">O que vamos apresentar</h2>
+    <ol class="toc">
+      <li class="r" style="--d:1"><span class="n">01</span><b>O cenário e o problema</b><span class="d">por que esperar a loja não funciona</span></li>
+      <li class="r" style="--d:2"><span class="n">02</span><b>O que está em jogo</b><span class="d">stakeholders, requisitos e RAS</span></li>
+      <li class="r" style="--d:3"><span class="n">03</span><b>A solução</b><span class="d">SDUI e a arquitetura</span></li>
+      <li class="r" style="--d:4"><span class="n">04</span><b>Quando dá errado</b><span class="d">falhas, rollback e métricas</span></li>
+      <li class="r" style="--d:5"><span class="n">05</span><b>As escolhas</b><span class="d">decisões e trade-offs</span></li>
+      <li class="r" style="--d:6"><span class="n">06</span><b>Fechamento</b><span class="d">as três perguntas do desafio</span></li>
+    </ol>
+  </div>
+  <aside class="notes">Sumário. A apresentação segue a história da Ana em seis partes, as mesmas da barra de progresso embaixo. Não leia a lista: basta dizer que vamos do problema à arquitetura, depois às falhas e às decisões, e terminamos respondendo às três perguntas do desafio.</aside>
+</section>
+
 <!-- 2 · ERA UMA VEZ -->
 <section class="slide" data-act="0">
   <div class="duo"><img src="assets/img/rollout-publico.jpg" alt=""></div>
   <div class="body" style="max-width:620px">
     <p class="spine r">Cenário · OpenFest</p>
-    <h2 class="r" style="--d:1">Um festival com 100 mil pessoas por dia <span class="hip">hipótese</span></h2>
+    <h2 class="r" style="--d:1">Um festival com 100 mil pessoas por dia</h2>
     <p class="lead r" style="--d:2;margin-top:20px">e um app que é o festival no bolso.</p>
     <div class="iconrow r" style="--d:3">
       <div><svg class="ico" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4z"/><path d="M13 5v2M13 11v2M13 17v2"/></svg>Ingresso <span class="tg nat">nativo</span></div>
@@ -512,7 +533,7 @@ th{border-bottom-color:rgba(138,180,0,.55)}
       <div><svg class="ico" viewBox="0 0 24 24"><path d="M3 11v2a1 1 0 0 0 1 1h3l6 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/></svg>Avisos ao vivo <span class="tg sd">SDUI</span></div>
     </div>
   </div>
-  <aside class="notes">Este é o OpenFest, nosso cenário: um festival de 3 a 7 dias. Vamos acompanhar a <b>Ana</b>, uma participante. Para ela, o app é tudo: o ingresso, a programação, o mapa e a recarga da pulseira. As etiquetas já adiantam a arquitetura: o <b>ingresso é nativo</b> (QR guardado no celular, abre sem internet); programação, mapa, recarga e avisos são montados por SDUI. Cashless: pagar com a pulseira na barraca; no app, vincula a pulseira e recarrega o saldo.</aside>
+  <aside class="notes">Este é o OpenFest, nosso cenário: um festival de 3 a 7 dias. Os 100 mil por dia são uma hipótese de dimensionamento (Fase 1), não um número medido; se perguntarem, diga isso. Vamos acompanhar a <b>Ana</b>, uma participante. Para ela, o app é tudo: o ingresso, a programação, o mapa e a recarga da pulseira. As etiquetas já adiantam a arquitetura: o <b>ingresso é nativo</b> (QR guardado no celular, abre sem internet); programação, mapa, recarga e avisos são montados por SDUI. Cashless: pagar com a pulseira na barraca; no app, vincula a pulseira e recarrega o saldo.</aside>
 </section>
 
 <!-- 3 · TODO DIA -->
@@ -534,7 +555,7 @@ th{border-bottom-color:rgba(138,180,0,.55)}
         <div class="f" data-f="3"><i>3</i>Apple e Google revisam</div>
         <div class="f" data-f="4"><i>4</i>Cada pessoa atualiza… se quiser</div>
       </div>
-      <div class="f" data-f="5" style="margin-top:34px;display:flex;align-items:baseline;gap:16px"><span class="bigt">dias</span><span class="hip">hipótese</span></div>
+      <div class="f" data-f="5" style="margin-top:34px"><span class="bigt"><span class="lead-in">Isso leva</span> dias.</span></div>
       <p class="lead f" data-f="5" style="margin-top:10px"><em>Um festival dura de 3 a 7 dias.</em> Essa conta não fecha.</p>
     </div>
   </div>
@@ -600,13 +621,13 @@ th{border-bottom-color:rgba(138,180,0,.55)}
   <div class="body cols c3" style="gap:14px">
     <div class="col f" data-f="1"><div class="num">0</div><p><b>crashes</b> causados pela tela, em versões de até 18 meses</p></div>
     <div class="col f" data-f="2"><div class="num">100%</div><p>das telas com <b>assinatura válida</b>; só ações do catálogo</p></div>
-    <div class="col f" data-f="3"><div class="num">≤ 4,5 min</div><p>para <b>desfazer</b> uma publicação <span class="hip">hipótese</span></p></div>
+    <div class="col f" data-f="3"><div class="num">≤ 4,5 min</div><p>para <b>desfazer</b> uma publicação</p></div>
     <div class="col f" data-f="4"><div class="num">100%</div><p>das <b>telas críticas</b> abrem, mesmo sem internet</p></div>
-    <div class="col f" data-f="5"><div class="num">300 ms</div><p>p95 com <b>~6 mil req/s</b> no pico <span class="hip">hipótese</span></p></div>
-    <div class="col f" data-f="6"><div class="num">≤ 5 min</div><p>para <b>alertar</b> um desvio, medido por tela e versão <span class="hip">hipótese</span></p></div>
+    <div class="col f" data-f="5"><div class="num">300 ms</div><p>p95 com <b>~6 mil req/s</b> no pico</p></div>
+    <div class="col f" data-f="6"><div class="num">≤ 5 min</div><p>para <b>alertar</b> um desvio, medido por tela e versão</p></div>
   </div>
-  <p class="gloss r" style="--d:6;margin-top:0"><b>p95</b>: 95% das respostas são mais rápidas que esse tempo.</p>
-  <aside class="notes">Cada seta revela um RAS (aula 9): RAS001 compatibilidade, RAS002 segurança, RAS003 reversão, RAS004 disponibilidade, RAS005 desempenho e RAS006 observabilidade (medir e alertar em até 5 min). p95: 95% das respostas são mais rápidas que esse tempo. Os números de reversão e desempenho são hipóteses de dimensionamento, não medições.</aside>
+  <p class="gloss r" style="--d:6;margin-top:0"><b>p95 de 300 ms</b>: 95% das respostas chegam em até 300 ms.</p>
+  <aside class="notes">Cada seta revela um RAS (aula 9): RAS001 compatibilidade, RAS002 segurança, RAS003 reversão, RAS004 disponibilidade, RAS005 desempenho e RAS006 observabilidade (medir e alertar em até 5 min). p95 de 300 ms: 95% das respostas chegam em até 300 ms. Os números de reversão e desempenho são hipóteses de dimensionamento, não medições.</aside>
 </section>
 
 <!-- 7 · A IDEIA -->
@@ -643,7 +664,7 @@ th{border-bottom-color:rgba(138,180,0,.55)}
       <div class="ver">v5</div>
       <div class="ph-h">Programação</div><div class="ph-sub">Sábado · Palco Norte</div>
       <div class="ph-alert"><b>Temporal às 20h.</b> Siga a rota para a área coberta ↗</div>
-      <div class="ph-chip"><span class="c">◎ Perto de mim</span><span class="fb">Atualize o app para filtrar por distância</span></div>
+      <div class="ph-chip"><span class="c"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Perto de mim</span><span class="fb">Atualize o app para filtrar por distância</span></div>
       <div class="ph-row"><span class="h">19:30</span><span>Banda Aurora<small>Palco Norte</small></span></div>
       <div class="ph-row"><span class="h">21:00</span><span>Os Cometas<small>Palco Sul</small></span></div>
       <div class="ph-row"><span class="h">22:30</span><span>DJ Maré<small>Tenda</small></span></div>
@@ -762,7 +783,7 @@ th{border-bottom-color:rgba(138,180,0,.55)}
       <div class="two">
         <div class="r" style="--d:2"><div class="lp">
         <div class="t">Programação</div><div class="s">App novo · nível 7</div>
-        <span class="chip">◎ Perto de mim</span>
+        <span class="chip"><svg class="ci" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Perto de mim</span>
         <div class="rw"><span class="h">21:00</span>Banda A</div>
         <div class="rw"><span class="h">22:00</span>Banda B</div>
         <div class="rw"><span class="h">23:30</span>Banda C</div>
@@ -793,7 +814,7 @@ th{border-bottom-color:rgba(138,180,0,.55)}
       <div class="st err f" data-f="4"><div class="n">4</div><div class="bar"></div><h3>Tratar erro</h3><p>Última válida, depois tela embarcada, depois mensagem</p></div>
     </div>
     <table class="f" data-f="5" style="margin-top:40px;font-size:15.5px;max-width:860px">
-      <tr><th>Sem manifesto novo há… <span class="hip">hipótese</span></th><th>Classe B (conteúdo)</th><th>Classe A (dinheiro)</th></tr>
+      <tr><th>Sem manifesto novo há…</th><th>Classe B (conteúdo)</th><th>Classe A (dinheiro)</th></tr>
       <tr><td class="k">até 15 min</td><td>Normal</td><td>Normal</td></tr>
       <tr><td class="k">15 min a 24 h</td><td>Usa o que tem <span class="small">(fail-open: na dúvida, mostra)</span></td><td>Só a embarcada <span class="small">(fail-closed: na dúvida, bloqueia)</span></td></tr>
       <tr><td class="k">mais de 24 h</td><td>Embarcada</td><td>Embarcada</td></tr>
@@ -819,8 +840,8 @@ th{border-bottom-color:rgba(138,180,0,.55)}
   <h2 class="r w">Uma jornada nova: cupom na recarga, sem loja</h2>
   <div class="body" style="display:grid;grid-template-columns:auto 1fr;gap:50px;align-items:center">
     <div class="jr">
-      <div class="ln r" style="--d:1"><span class="tag"><b>v5</b>hoje</span><div class="ms"><div class="sn">Recarga 1/2</div><div class="q">Quanto recarregar?</div><div class="vals"><i>R$ 50</i><i class="on">R$ 100</i><i>R$ 200</i></div><div class="bt">Continuar</div></div><span class="sa"></span><div class="ms"><div class="sn">Recarga 2/2</div><div class="q">Confirmar</div><div style="font-size:15px;font-weight:700">R$ 100</div><div class="bt">🔒 Confirmar</div></div></div>
-      <div class="ln r" style="--d:3"><span class="tag"><b>v6</b>com cupom</span><div class="ms"><div class="sn">Recarga 1/3</div><div class="q">Quanto recarregar?</div><div class="vals"><i>R$ 50</i><i class="on">R$ 100</i><i>R$ 200</i></div><div class="bt">Continuar</div></div><span class="sa"></span><div class="ms new"><span class="nw">NOVO</span><div class="sn">Recarga 2/3</div><div class="q">Oferta do patrocinador</div><div class="in">Código do cupom</div><div class="bt">Aplicar</div></div><span class="sa"></span><div class="ms"><div class="sn">Recarga 3/3</div><div class="q">Confirmar</div><div style="font-size:15px;font-weight:700">R$ 100</div><div class="bonus">+ R$ 10 de bônus</div><div class="bt">🔒 Confirmar</div></div></div>
+      <div class="ln r" style="--d:1"><span class="tag"><b>v5</b>hoje</span><div class="ms"><div class="sn">Recarga 1/2</div><div class="q">Quanto recarregar?</div><div class="vals"><i>R$ 50</i><i class="on">R$ 100</i><i>R$ 200</i></div><div class="bt">Continuar</div></div><span class="sa"></span><div class="ms"><div class="sn">Recarga 2/2</div><div class="q">Confirmar</div><div style="font-size:15px;font-weight:700">R$ 100</div><div class="bt">Confirmar</div></div></div>
+      <div class="ln r" style="--d:3"><span class="tag"><b>v6</b>com cupom</span><div class="ms"><div class="sn">Recarga 1/3</div><div class="q">Quanto recarregar?</div><div class="vals"><i>R$ 50</i><i class="on">R$ 100</i><i>R$ 200</i></div><div class="bt">Continuar</div></div><span class="sa"></span><div class="ms new"><span class="nw">NOVO</span><div class="sn">Recarga 2/3</div><div class="q">Oferta do patrocinador</div><div class="in">Código do cupom</div><div class="bt">Aplicar</div></div><span class="sa"></span><div class="ms"><div class="sn">Recarga 3/3</div><div class="q">Confirmar</div><div style="font-size:15px;font-weight:700">R$ 100</div><div class="bonus">+ R$ 10 de bônus</div><div class="bt">Confirmar</div></div></div>
     </div>
     <div class="trio">
       <div class="f" data-f="1"><span class="label">Compatível</span><p>O campo existe desde o nível 6. Apps mais antigos seguem na v5.</p></div>
@@ -864,7 +885,7 @@ th{border-bottom-color:rgba(138,180,0,.55)}
       <tr><th>Falha</th><th>Como percebemos</th><th>Para onde vai</th></tr>
       <tr class="f" data-f="1"><td class="k">Peça nova em app antigo</td><td>Evento de peça omitida</td><td>Alternativa ou tela embarcada</td></tr>
       <tr class="f" data-f="2"><td class="k">Tela adulterada</td><td>Assinatura inválida</td><td>Descarta; nada é executado</td></tr>
-      <tr class="f" data-f="3"><td class="k">Publicação com erro</td><td>Comparação com o controle</td><td>Rollback em ≤ 4,5 min <span class="hip">hipótese</span></td></tr>
+      <tr class="f" data-f="3"><td class="k">Publicação com erro</td><td>Comparação com o controle</td><td>Rollback em ≤ 4,5 min</td></tr>
       <tr class="f" data-f="4"><td class="k">Serviço fora no pico</td><td>Monitor sintético</td><td>Borda segue servindo</td></tr>
       <tr class="f" data-f="5"><td class="k">Sem internet na fila</td><td>—</td><td>Ingresso nativo, offline</td></tr>
       <tr class="f" data-f="6"><td class="k">Conteúdo errado</td><td>Botão "reportar erro"</td><td>Desfazer em um clique</td></tr>
@@ -919,12 +940,12 @@ th{border-bottom-color:rgba(138,180,0,.55)}
       <div class="mx">
         <div class="col r" style="--d:2"><h3>Erros</h3><div class="num">0 crash</div><p>telas exibidas, reservas usadas</p></div>
         <div class="col r" style="--d:3"><h3>Desempenho</h3><div class="num">p95</div><p>tempo até a tela útil</p></div>
-        <div class="col r" style="--d:4"><h3>Disponibilidade</h3><div class="num">99,9%</div><p>nos dias de evento <span class="hip">hipótese</span></p></div>
+        <div class="col r" style="--d:4"><h3>Disponibilidade</h3><div class="num">99,9%</div><p>nos dias de evento</p></div>
         <div class="col r" style="--d:5"><h3>Segurança</h3><div class="num">assinaturas</div><p>inválidas e ações recusadas</p></div>
       </div>
     </div>
     <table class="f" data-f="1" style="margin-top:22px;font-size:14.5px">
-      <tr><th>Alerta</th><th>Quando dispara <span class="hip">hipótese</span></th><th>O que acontece</th></tr>
+      <tr><th>Alerta</th><th>Quando dispara</th><th>O que acontece</th></tr>
       <tr><td class="k">Regressão forte</td><td>Erro 2 p.p. acima do controle por 2 min, ou 1 crash em classe A</td><td>Rollback automático</td></tr>
       <tr><td class="k">Regressão fraca</td><td>Erro 1 p.p. acima do controle</td><td>Pausa a liberação</td></tr>
       <tr><td class="k">Possível ataque</td><td>Muitas assinaturas inválidas na mesma rede</td><td>Segurança investiga</td></tr>
@@ -963,7 +984,7 @@ th{border-bottom-color:rgba(138,180,0,.55)}
       <p class="verdict">A balança pende para a segurança</p></div>
     <div class="trio">
       <div class="r" style="--d:2"><span class="label">Escolhemos</span><p>Assinar cada tela, com chaves separadas por uso</p></div>
-      <div class="r" style="--d:3"><span class="label">Pagamos</span><p>Gestão de chaves e ~1–3 ms por tela <span class="hip">hipótese</span></p></div>
+      <div class="r" style="--d:3"><span class="label">Pagamos</span><p>Gestão de chaves e ~1–3 ms por tela</p></div>
       <div class="r" style="--d:4"><span class="label">Descartamos</span><p>Só HTTPS: não protege de uma CDN comprometida</p></div>
     </div>
   </div>
@@ -1036,19 +1057,18 @@ th{border-bottom-color:rgba(138,180,0,.55)}
     <li>NYGARD, M. Documenting architecture decisions. 2011.</li>
     <li>BASS, L.; CLEMENTS, P.; KAZMAN, R. Software Architecture in Practice. 4. ed. Addison-Wesley, 2021.</li>
   </ol>
-  <p class="small" style="margin-top:22px">Lista completa, com datas de acesso: fases/fase-2-pesquisa.md. Números marcados como <span class="hip">hipótese</span> não foram medidos. Fotos: Unsplash (licença livre).</p>
+  <p class="small" style="margin-top:22px">Lista completa, com datas de acesso: fases/fase-2-pesquisa.md. Os números de carga, tempo e custo são hipóteses de dimensionamento, não medições. Fotos: Unsplash (licença livre).</p>
   </div>
 </section>
 
 <!-- 26 · ENCERRAMENTO -->
 <section class="slide closing">
   <div class="body">
-    <p class="spine r" style="--d:1">Encerramento</p>
-    <h1 class="r" style="--d:2">Obrigado</h1>
+    <h1 class="r" style="--d:1">Obrigado</h1>
     <div class="rule r" style="--d:3"></div>
     <p class="sub r" style="--d:4">Perguntas?</p>
   </div>
-  <aside class="notes">Encerramento. Abra para perguntas; as três da defesa estão respondidas no slide 25.</aside>
+  <aside class="notes">Encerramento. Abra para perguntas; as três da defesa estão respondidas no slide 26.</aside>
 </section>
 
 </div>
@@ -1065,10 +1085,23 @@ th{border-bottom-color:rgba(138,180,0,.55)}
   const ACTS = ['Era uma vez', 'Até que um dia', 'Por causa disso', 'Os vilões', 'As escolhas', 'Até que finalmente'];
 
   // rodapé: logo, mapa da história e número
-  const BARS = ['bottom-in', 'top', 'right', 'top-in', 'left', 'bottom-in', 'top', 'right'];
+  // barra de progresso por parte da história (capa entra na 1ª parte; referências e encerramento, na última)
+  let lastAct = 0;
+  const actOf = slides.map(s => (lastAct = s.dataset.act !== undefined ? +s.dataset.act : lastAct));
+  const nActs = ACTS.length, perAct = Array.from({length: nActs}, (_, a) => actOf.filter(x => x === a).length);
+  slides.forEach((s, i) => {
+    const a = actOf[i], pos = actOf.slice(0, i + 1).filter(x => x === a).length;
+    const bar = document.createElement('div');
+    bar.className = 'prog';
+    bar.innerHTML = perAct.map((n, k) => {
+      const w = k < a ? 100 : k === a ? pos / n * 100 : 0;
+      return '<div class="sg" style="--n:' + n + '"><i style="--w:' + w.toFixed(2) + '%"></i></div>';
+    }).join('');
+    s.appendChild(bar);
+  });
+
   slides.forEach((s, i) => {
     const solo = s.classList.contains('cover') || s.classList.contains('closing');
-    s.dataset.bar = solo ? 'bottom' : BARS[i % BARS.length];
     if (solo) return;
     const a = s.dataset.act;
     const f = document.createElement('div');
@@ -1157,7 +1190,7 @@ th{border-bottom-color:rgba(138,180,0,.55)}
     '<span class="pct">5%</span> recebem a v6. O resto é o grupo de controle.',
     '<span class="pct">25%</span>: erro igual ao do controle. Avança.',
     '<span class="pct">50%</span>: o erro sobe 2 p.p. acima do controle.',
-    'Rollback automático: todos de volta à v5 em <span class="pct">≤ 4,5 min</span> <span class="hip">hipótese</span>'
+    'Rollback automático: todos de volta à v5 em <span class="pct">≤ 4,5 min</span>'
   ];
   hooks.dots = (s, k) => {
     const n = [0, 5, 25, 50, 0][k], dots = s.querySelectorAll('.dots i');
